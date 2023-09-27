@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+    <meta charset="utf-8">
+  
+    <meta name="viewport" content="initial-scale=1.0, minimum-scale=1.0">
+  
+    <meta name="theme-color" content="#375f7E">
+  
+    <meta http-equiv="x-ua-compatible" content="IE=edge">
+  
+  <title>ownCloud</title>
+  <link rel="manifest" href="manifest.json" crossorigin="use-credentials">
+  
+    <link href="fonts/inter.css?1669734995370" rel="stylesheet">
+  
+    <link href="css/web.css?1669734995370" rel="stylesheet">
+  
+  
+  <script src="js/require.js?1669734995370"></script>
+  
+  <style>
+    html,
+    body {
+      height: 100%
+    }
+    .splash-banner {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      padding: 0.5rem;
+      height: 100%;
+    }
+    #splash-loading{
+      height: 100%;
+    }
+    .splash-loading-hide {
+      display: none;
+    }
+    #loading {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      border: 2px solid #4c5f79;
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+      -webkit-animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { -webkit-transform: rotate(360deg); }
+    }
+    @-webkit-keyframes spin {
+      to { -webkit-transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div id="splash-loading" class="splash-banner splash-loading-hide">
+    <div id="loading"></div>
+  </div>
+  <div id="owncloud"></div>
+  <noscript>
+    <div class="splash-banner"><h3>Please enable JavaScript</h3></div>
+  </noscript>
+  <script>
+    var loader = document.getElementById('splash-loading')
+    var loaderTimer = setTimeout(function () {
+      loader.classList.remove('splash-loading-hide')
+    }, 1000);
+
+    function displayError() {
+      loader.classList.remove('splash-loading-hide')
+      loader.innerHTML = "<h3>Oops. Something went wrong.</h3>"
+    }
+
+    if (typeof requirejs === 'undefined') {
+      displayError()
+    } else {
+      requirejs.config({
+        baseUrl: "js",
+        paths: {"require":"require","web-app-draw-io":"web-app-draw-io-3ec12970","web-app-external":"web-app-external-0c451698","web-app-files":"web-app-files-2cc3f81a","web-client":"web-client-c170d434","web-app-pdf-viewer":"web-app-pdf-viewer-c5248f89","web-app-preview":"web-app-preview-faee5542","web-app-search":"web-app-search-1278bff2","web-app-text-editor":"web-app-text-editor-9b9fcdea","web-app-user-management":"web-app-user-management-1fff61c0","web-pkg":"web-pkg-58df1f76","web-runtime":"web-runtime-739975da","vendor":"vendor-22992e2c","base":"base-fbc1ccef","useAppDefaults":"useAppDefaults-a6c3be91","visibility":"visibility-c7f197c2","useSpacesLoading":"useSpacesLoading-b404aeae","useDriveResolver":"useDriveResolver-be2aa3cc","useGraphClient":"useGraphClient-6c0c047b","functions":"functions-f74c7f04","List":"List-7b7e3ab3","_rollupPluginBabelHelpers":"_rollupPluginBabelHelpers-d0b0ebba","error":"error-cc50dafd","client":"client-aa4fd000","AppLoadingSpinner":"AppLoadingSpinner-348c6387","QuotaSelect":"QuotaSelect-f6082d31","loadPreview":"loadPreview-dfef3918","filesize":"filesize-506c5ef4","useLocalStorage":"useLocalStorage-9756f032","useTranslations":"useTranslations-561064a5","useUserContext":"useUserContext-a419a918","AppTopBar":"AppTopBar-4add792e","permissionManager":"permissionManager-dac47567"},
+        ...{}
+      })
+
+      requirejs(['web-runtime'], function (runtime) {
+        clearTimeout(loaderTimer)
+        document.getElementById('splash-loading').classList.add('splash-loading-hide')
+        runtime.bootstrap('config.json').then(runtime.renderSuccess).catch(runtime.renderFailure)
+      }, function(e) {
+        displayError()
+        throw e
+      })
+    }
+
+  </script>
+</body>
+</html>
